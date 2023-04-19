@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 export class GameOfLifeGrid {
   private readonly rows: number;
   private readonly columns: number;
@@ -35,12 +37,25 @@ export class GameOfLifeGrid {
 
   renderGrid() {
     return (
-        <div className="grid grid-cols-10 gap-1">
-              
+        <div className="grid grid-cols-10 max-w-fit min-w-max justify-items-center items-center gap-2 gap-x-2">
+          {
+            this.grid.map( (row, i) => {
+              return row.map( (col, j) => {
+                return (
+                  <div 
+                    key={String(i)+String(j)} 
+                    className={clsx(
+                      ["w-10 h-10", {
+                        "bg-red-700" : col,
+                        "bg-slate-500" : !col
+                      }]
+                    )}>
+                  </div>
+                )
+              })
+            })
+          }
         </div>
     );
   }
 }
-
-
-// {`cell ${cell ? 'alive' : 'dead'}`}

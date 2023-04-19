@@ -10,7 +10,10 @@ export default function Home() {
   grid.randomize()
   return (
     <main className="w-full h-screen bg-slate-900 p-12">
-      {grid.renderGrid()}
+      <div className='w-1/2'>
+
+        {grid.renderGrid()}
+      </div>
     </main>
   )
 }
