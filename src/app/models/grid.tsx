@@ -1,14 +1,17 @@
 import clsx from "clsx";
 
-export class GameOfLifeGrid {
-  private readonly rows: number;
-  private readonly columns: number;
-  private readonly grid: boolean[][];
+export class Grid {
+
+  public readonly rows: number;
+  public readonly columns: number;
+  public readonly grid: boolean[][];
+  public readonly func: () => void
 
   constructor(rows: number, columns: number) {
-    this.rows = rows;
-    this.columns = columns;
-    this.grid = new Array(rows).fill(false).map(() => new Array(columns).fill(false));
+    this.rows = rows
+    this.columns = columns
+    this.grid = new Array(rows).fill(false).map(() => new Array(columns).fill(false))
+    this.func = () => this.randomize()
   }
 
   public getRows(): number {
@@ -35,9 +38,13 @@ export class GameOfLifeGrid {
     }
   }
 
-  renderGrid() {
+  public renderGrid() {
+    console.log('rendering grid...', {columns: this.columns, rows: this.rows})
     return (
-        <div className="grid grid-cols-10 max-w-fit min-w-max justify-items-center items-center gap-2 gap-x-2">
+        <div 
+          className='grid max-w-fit min-w-max justify-items-center items-center gap-2 gap-x-2'
+          style={{gridTemplateColumns: `repeat(${this.columns},minmax(0,1fr))`}}
+        >
           {
             this.grid.map( (row, i) => {
               return row.map( (col, j) => {
