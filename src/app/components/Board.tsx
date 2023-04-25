@@ -40,8 +40,19 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
     setGridArray(newMatrix)
   }
 
+  const handleCellClick = (coordinates: {i: number, j: number}) => {
+    const { i:row, j:col, } = coordinates
+
+    const isCellAlive = gridArray![row][col]
+
+    const gridArrayClone = [...gridArray!]
+    gridArrayClone![row][col] = !isCellAlive
+
+    setGridArray(gridArrayClone)
+
+  }
+
   useEffect(() => {
-    console.log('effec')
     setGridArray(matrix)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -60,16 +71,21 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
           gridArray &&
           gridArray.map( (row, i) => {
             return row.map( (col, j) => {
+              const coordinates = {i, j}
               return (
                 <div 
-                  key={String(i)+String(j)} 
+                  key={'Cell'+String(i)+String(j)} 
+                  
                   className={clsx(
-                    ["w-10 h-10", {
-                      "bg-red-700" : col,
-                      "bg-slate-500" : !col
+                    ["w-10 h-10 hover:cursor-pointer hover:opacity-80 transition-all", {
+                      "bg-red-700" : gridArray![i][j],
+                      "bg-slate-500" : !gridArray![i][j]
                     }]
-                  )}>
-                </div>
+                  )} 
+                
+                  onClick={() => handleCellClick(coordinates) }
+                />
+                
               )
             })
           })
