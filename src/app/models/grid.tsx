@@ -29,8 +29,9 @@ export class Grid {
     return this.grid[row][column];
   }
 
-  public setAlive(row: number, column: number, alive: boolean): void {
-    this.grid[row][column] = alive;
+  public toggleCell(row: number, column: number) {
+    this.grid[row][column] = !this.isAlive(row, column);
+    console.log(this.grid)
   }
 
   public randomize(): boolean[][] {
