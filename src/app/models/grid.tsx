@@ -1,25 +1,28 @@
 import clsx from "clsx";
+import { RefObject, createRef } from "react";
+
 
 export class Grid {
 
   public readonly rows: number;
   public readonly columns: number;
   public readonly grid: boolean[][];
-  public readonly func: () => void
+  public readonly gridRef: RefObject<Grid>
 
   constructor(rows: number, columns: number) {
     this.rows = rows
     this.columns = columns
     this.grid = new Array(rows).fill(false).map(() => new Array(columns).fill(false))
-    this.func = () => this.randomize()
+    this.gridRef = createRef()
   }
 
-  public getRows(): number {
-    return this.rows;
-  }
-
-  public getColumns(): number {
-    return this.columns;
+  public getGridSpecs() {
+    return  {
+      columns: this.columns,
+      rows: this.rows,
+      matrix: this.grid,
+      gridRef: this.gridRef
+    }
   }
 
   public isAlive(row: number, column: number): boolean {
@@ -30,16 +33,19 @@ export class Grid {
     this.grid[row][column] = alive;
   }
 
-  public randomize(): void {
+  public randomize(): boolean[][] {
+    console.log('shuffling...')
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.columns; j++) {
         this.grid[i][j] = Math.floor(Math.random() * 2) === 1 ? true : false;
       }
     }
+
+    return this.grid
   }
 
   public renderGrid() {
-    console.log('rendering grid...', {columns: this.columns, rows: this.rows})
+    console.log('rendering grid...', {columns: this.columns, rows: this.rows, grid: this.grid})
     return (
         <div 
           className='grid max-w-fit min-w-max justify-items-center items-center gap-2 gap-x-2'
