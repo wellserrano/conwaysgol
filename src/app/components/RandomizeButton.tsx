@@ -9,13 +9,9 @@ interface RandomizeButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElem
 }
 
 const RandomizeButton: FC<RandomizeButtonProps> = ({t, ...props}) => {
-  const shuffleGrid = () => {
-    console.log('t', t)
-    t?.current?.randomize()
-  }
 
   return (
-    <Button title='Randomize' onClick={ shuffleGrid } {...props} />
+    <Button title='Randomize' {...props} />
   )
 }
 
