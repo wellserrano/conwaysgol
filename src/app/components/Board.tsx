@@ -45,6 +45,8 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
   const handleCellClick = (coordinates: {i: number, j: number}) => {
     const { i:row, j:col, } = coordinates
 
+    if (isGameActive) return
+
     const isCellAlive = gridArray![row][col]
 
     const gridArrayClone = [...gridArray!]
@@ -53,8 +55,6 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
     setGridArray(gridArrayClone)
 
   }
-
-
 
   const startGame = () => {
     setIsGameActive(prevState => !prevState)    
@@ -85,9 +85,7 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
           const isCellAlive = currentCellStatus
   
           const gridArrayClone = [...gridArray!]
-      
-          setGridArray(gridArrayClone)
-  
+
           // Any live cell with two or three live neighbours survives.
           if (isCellAlive && (numberOfLiveNeighbours === 2 || numberOfLiveNeighbours === 3))
           gridArrayClone![i][j] = true
@@ -100,7 +98,8 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
           else {
             gridArrayClone![i][j] = false
           }
-  
+
+          setGridArray(gridArrayClone)
   
           //  // debug
           // console.log({
@@ -113,10 +112,10 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
       })
     }
 
-    
     const running = setTimeout(() => {
       nextStep()
-    }, 200)
+    }, 250)
+
     
     if (!isGameActive) return clearTimeout(running)
 
@@ -146,15 +145,17 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
                 <div 
                   key={'Cell'+String(i)+String(j)} 
                   className={clsx(
-                    ["flex justify-center items-center w-10 h-10 max-w-10 max-h-10 hover:cursor-pointer hover:opacity-80 transition-all", {
+                    ["flex justify-center items-center w-10 h-10 max-w-10 max-h-10 transition-all", {
                       "bg-red-700" : isAlive,
-                      "bg-slate-500" : !isAlive
+                      "bg-slate-500" : !isAlive,
+                      "hover:cursor-default": isGameActive,
+                      "hover:cursor-pointer hover:opacity-80" : !isGameActive
                     }]
                   )} 
                   onClick={() => handleCellClick(coordinates) }
                 >
                   {/* debug p */}
-                  <p className='text-xs'>{`${i},${j}`}</p> 
+                  {/* <p className='text-xs'>{`${i},${j}`}</p>  */}
                 </div>
               )
             })
@@ -163,8 +164,8 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
       </div>
 
       <div className='flex flex-col h-fit p-3 gap-4 bg-black/10 rounded-sm'>
-        <RandomizeButton onClick={ shuffleGrid } />
-        <PlayButton onClick={ startGame } />
+        <RandomizeButton onClick={ shuffleGrid } disabled={isGameActive}/>
+        <PlayButton title={isGameActive ? 'Pause' : 'Play'} onClick={ startGame } />
       </div>
 
     </div>

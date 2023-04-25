@@ -3,12 +3,14 @@
 import { FC } from 'react'
 import { Button } from '@/components/Button'
 
-interface PlayButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+interface PlayButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  title: string
+}
 
-const PlayButton: FC<PlayButtonProps> = ({...props}) => {
+const PlayButton: FC<PlayButtonProps> = ({title, ...props}) => {
 
   return (
-    <Button title='Play' {...props} />
+    <Button title={title} {...props} />
   )
 }
 
