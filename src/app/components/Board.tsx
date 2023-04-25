@@ -31,8 +31,9 @@ extends VariantProps<typeof boardVariants>, HTMLAttributes<HTMLDivElement> {}
 const Board = forwardRef<HTMLDivElement, BoardProps>(
 ({className, ...props}, ref) => {
   const [gridArray, setGridArray] = useState<boolean[][] | null>(null)
+  const [isGameActive, setIsGameActive] = useState<boolean>(false)
 
-  const grid = new Grid(8,8)
+  const grid = new Grid(10,10)
   
   const { columns, matrix } = grid.getGridSpecs()
 
@@ -53,57 +54,73 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
 
   }
 
-  const nextStep = () => {
-    gridArray?.forEach((row, i) => {
-      row.forEach((currentCellStatus, j) => {
-        const colsNumber = row.length
-        
-        const neighbours = [
-          i > 0 ? gridArray[i-1][j-1] ?? null : null,   //top-left
-          i > 0 ? gridArray[i-1][j] ?? null : null,     //above
-          i > 0 ? gridArray[i-1][j+1] ?? null : null,   //top-right
-
-          gridArray[i][j-1] ?? null,  //left
-          // currentCellStatus,          //center
-          gridArray[i][j+1] ?? null,  //right
-
-          i < colsNumber-1 ? gridArray[i+1][j-1] ?? null : null,   //bottom-left
-          i < colsNumber-1 ? gridArray[i+1][j] ?? null : null,     //below
-          i < colsNumber-1 ? gridArray[i+1][j+1] ?? null : null,   //bottom-right
-        ]
-
-        const numberOfLiveNeighbours = neighbours.filter(isAlive => isAlive === true).length
-
-        const isCellAlive = currentCellStatus
-
-        const gridArrayClone = [...gridArray!]
-    
-        setGridArray(gridArrayClone)
-
-        // Any live cell with two or three live neighbours survives.
-        if (isCellAlive && (numberOfLiveNeighbours === 2 || numberOfLiveNeighbours === 3))
-        gridArrayClone![i][j] = true
-
-        // Any dead cell with three live neighbours becomes a live cell.
-        else if (!isCellAlive && numberOfLiveNeighbours === 3)
-        gridArrayClone![i][j] = true
-
-        // All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-        else {
-          gridArrayClone![i][j] = false
-        }
 
 
-        //  // debug
-        // console.log({
-        //   currentCellStatus, 
-        //   coord: {i, j},
-        //   neighbours,
-        //   numberOfLiveNeighbours
-        // })
-      })
-    })
+  const startGame = () => {
+    setIsGameActive(prevState => !prevState)    
   }
+
+  useEffect(() => {
+    const nextStep = () => {
+      gridArray?.forEach((row, i) => {
+        row.forEach((currentCellStatus, j) => {
+          const colsNumber = row.length
+          
+          const neighbours = [
+            i > 0 ? gridArray[i-1][j-1] ?? null : null,   //top-left
+            i > 0 ? gridArray[i-1][j] ?? null : null,     //above
+            i > 0 ? gridArray[i-1][j+1] ?? null : null,   //top-right
+  
+            gridArray[i][j-1] ?? null,  //left
+            // currentCellStatus,          //center
+            gridArray[i][j+1] ?? null,  //right
+  
+            i < colsNumber-1 ? gridArray[i+1][j-1] ?? null : null,   //bottom-left
+            i < colsNumber-1 ? gridArray[i+1][j] ?? null : null,     //below
+            i < colsNumber-1 ? gridArray[i+1][j+1] ?? null : null,   //bottom-right
+          ]
+  
+          const numberOfLiveNeighbours = neighbours.filter(isAlive => isAlive === true).length
+  
+          const isCellAlive = currentCellStatus
+  
+          const gridArrayClone = [...gridArray!]
+      
+          setGridArray(gridArrayClone)
+  
+          // Any live cell with two or three live neighbours survives.
+          if (isCellAlive && (numberOfLiveNeighbours === 2 || numberOfLiveNeighbours === 3))
+          gridArrayClone![i][j] = true
+  
+          // Any dead cell with three live neighbours becomes a live cell.
+          else if (!isCellAlive && numberOfLiveNeighbours === 3)
+          gridArrayClone![i][j] = true
+  
+          // All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+          else {
+            gridArrayClone![i][j] = false
+          }
+  
+  
+          //  // debug
+          // console.log({
+          //   currentCellStatus, 
+          //   coord: {i, j},
+          //   neighbours,
+          //   numberOfLiveNeighbours
+          // })
+        })
+      })
+    }
+
+    
+    const running = setTimeout(() => {
+      nextStep()
+    }, 200)
+    
+    if (!isGameActive) return clearTimeout(running)
+
+  }, [isGameActive, gridArray])
 
   useEffect(() => {
     setGridArray(matrix)
@@ -147,7 +164,7 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
 
       <div className='flex flex-col h-fit p-3 gap-4 bg-black/10 rounded-sm'>
         <RandomizeButton onClick={ shuffleGrid } />
-        <PlayButton onClick={ nextStep } />
+        <PlayButton onClick={ startGame } />
       </div>
 
     </div>
