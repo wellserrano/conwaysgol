@@ -1,14 +1,11 @@
 'use client'
 
-import { FC, RefObject } from 'react'
+import { FC } from 'react'
 import { Button } from '@/components/Button'
-import { Grid } from '@/models/Grid'
 
-interface RandomizeButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  t?: RefObject<Grid>
-}
+interface RandomizeButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-const RandomizeButton: FC<RandomizeButtonProps> = ({t, ...props}) => {
+const RandomizeButton: FC<RandomizeButtonProps> = ({...props}) => {
 
   return (
     <Button title='Randomize' {...props} />
