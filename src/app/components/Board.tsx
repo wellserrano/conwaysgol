@@ -32,10 +32,12 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
 ({className, ...props}, ref) => {
   const [gridArray, setGridArray] = useState<boolean[][] | null>(null)
   const [isGameActive, setIsGameActive] = useState<boolean>(false)
+  const [gridSize, setGridSize] = useState<{rows: number, cols: number}>({rows: 32, cols: 32})
 
-  const grid = new Grid(10,10)
-  
-  const { columns, matrix } = grid.getGridSpecs()
+  const grid = new Grid(gridSize.rows, gridSize.cols)
+
+  const { columns, rows, matrix } = grid.getGridSpecs()
+
 
   const shuffleGrid = () => {
     const newMatrix = grid.randomize()
@@ -116,7 +118,6 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
       nextStep()
     }, 250)
 
-    
     if (!isGameActive) return clearTimeout(running)
 
   }, [isGameActive, gridArray])
@@ -133,9 +134,11 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
     {...props}
     >
       <div 
-        className='grid max-w-fit min-w-max justify-items-center items-center gap-2 gap-x-2'
-        style={{gridTemplateColumns: `repeat(${columns},minmax(0,1fr))`}}
+        className='grid justify-items-center items-center gap-2'
+        style={{gridTemplateColumns: `repeat(${columns},1fr)`, gridTemplateRows: `repeat(${rows},1fr)`}}
       >
+        
+
         {
           gridArray &&
           gridArray.map( (row, i) => {
@@ -145,16 +148,22 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
                 <div 
                   key={'Cell'+String(i)+String(j)} 
                   className={clsx(
-                    ["flex justify-center items-center w-10 h-10 max-w-10 max-h-10 transition-all", {
+                    [`flex justify-center items-center transition-all rounded-full`, {
                       "bg-red-700" : isAlive,
                       "bg-slate-500" : !isAlive,
                       "hover:cursor-default": isGameActive,
-                      "hover:cursor-pointer hover:opacity-80" : !isGameActive
+                      "hover:cursor-pointer hover:opacity-80" : !isGameActive,
+                    }, {
+                      // cell sizes based
+                      "h-10 w-10 gap-x-2 gap-y-2": gridSize.cols === 12,
+                      "h-[1.875rem] w-[1.875rem] gap-x-1 gap-y-1": gridSize.cols === 15,
+                      "h-[1.25rem] w-[1.25rem] gap-x-1 gap-y-1": gridSize.cols === 24,
+                      "h-[0.85rem] w-[0.85rem] gap-x-1 gap-y-1": gridSize.cols === 32,
                     }]
                   )} 
                   onClick={() => handleCellClick(coordinates) }
                 >
-                  {/* debug p */}
+                  {/* debug coordinates */}
                   {/* <p className='text-xs'>{`${i},${j}`}</p>  */}
                 </div>
               )
