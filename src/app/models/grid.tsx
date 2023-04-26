@@ -4,16 +4,16 @@ import { RefObject, createRef } from "react";
 
 export class Grid {
 
-  public readonly rows: number;
-  public readonly columns: number;
-  public readonly grid: boolean[][];
-  public readonly gridRef: RefObject<Grid>
+  public rows: number;
+  public columns: number;
+  public grid: boolean[][];
+  public gridRef: RefObject<Grid>
 
   constructor(rows: number, columns: number) {
     this.rows = rows
     this.columns = columns
-    this.grid = new Array(rows).fill(false).map(() => new Array(columns).fill(false))
     this.gridRef = createRef()
+    this.grid = new Array(rows).fill(false).map(() => new Array(columns).fill(false))
   }
 
   public getGridSpecs() {
@@ -31,17 +31,18 @@ export class Grid {
 
   public toggleCell(row: number, column: number) {
     this.grid[row][column] = !this.isAlive(row, column);
-    console.log(this.grid)
   }
 
   public randomize(): boolean[][] {
-    console.log('shuffling...')
-    for (let i = 0; i < this.rows; i++) {
-      for (let j = 0; j < this.columns; j++) {
-        this.grid[i][j] = Math.floor(Math.random() * 2) === 1 ? true : false;
-      }
-    }
+    console.log('shuffling...', this.grid)
 
+
+    return this.grid
+  }
+
+  public restartGrid(rows:number, cols:number): boolean[][] {
+    this.grid = []
+    this.grid = new Array(rows).fill(false).map(() => new Array(cols).fill(false))
     return this.grid
   }
 
