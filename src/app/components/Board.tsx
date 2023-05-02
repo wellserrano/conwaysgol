@@ -12,6 +12,7 @@ import RandomizeButton from './RandomizeButton'
 import PlayButton from './PlayButton'
 import SizeButton from './SizeButton'
 import AboutButton from './AboutButton'
+import ClearButton from './ClearButton'
 
 const boardVariants = cva(
  `flex flex-row w-full justify-between gap-8 items-center overflow-hidden`,
@@ -30,7 +31,7 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
 ({className, ...props}, ref) => {
   const [gridArray, setGridArray] = useState<boolean[][] | null>(null)
   const [isGameActive, setIsGameActive] = useState<boolean>(false)
-  const [gridSize, setGridSize] = useState<number>(12)
+  const [gridSize, setGridSize] = useState<number>(64)
 
   const handleCellClick = (coordinates: {i: number, j: number}) => {
     const { i:row, j:col, } = coordinates
@@ -58,6 +59,11 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
     setGridArray(shuffledGrid)
   }
 
+  const clear = () => {
+    const grid = new Array(gridSize).fill(false).map(() => new Array(gridSize).fill(false))
+    setGridArray(grid)
+  }
+
   const startGame = () => {
     setIsGameActive(prevState => !prevState)    
   }
@@ -71,7 +77,7 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
       const newGridArray = gridArray.map((row, i) =>
         row.map((currentCellStatus, j) => {
           const colsNumber = row.length
-          
+
           const neighbours = [
             i > 0 ? gridArray[i - 1][j - 1] ?? null : null,     //top-left
             i > 0 ? gridArray[i - 1][j] ?? null : null,         //above
@@ -144,9 +150,9 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
                     }, {
                       // cell sizes based on row column quantity
                       "h-8 w-8": gridSize === 12,
-                      "h-6 w-6": gridSize === 15,
                       "h-4 w-4": gridSize === 24,
                       "h-3 w-3": gridSize === 32,
+                      "h-1 w-1": gridSize === 64,
                     }]
                   )} 
                   onClick={() => handleCellClick(coordinates) }
@@ -162,15 +168,16 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
 
 
       <div className='relative flex flex-col h-fit p-3 gap-4 bg-black/10 rounded-sm'>
-        <RandomizeButton onClick={ randomize } disabled={ isGameActive }/>
         <PlayButton className={ isGameActive ? 'bg-green-300 hover:bg-red-300' : undefined } title={ isGameActive ? 'Pause' : 'Play'} onClick={ startGame } />
+        <ClearButton onClick={ clear } disabled={ isGameActive }/>
+        <RandomizeButton onClick={ randomize } disabled={ isGameActive }/>
         
         <div className='border-b-2 border-slate-500 h-2 w-full rounded-sm' />  
         
         <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='12x12' onClick={() => {if(!isGameActive) setGridSize(12)}} disabled={gridSize === 12 } />
-        <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='15x15' onClick={() => {if(!isGameActive) setGridSize(15)}} disabled={gridSize === 15 } />
         <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='24x24' onClick={() => {if(!isGameActive) setGridSize(24)}} disabled={gridSize === 24 } />
         <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='32x32' onClick={() => {if(!isGameActive) setGridSize(32)}} disabled={gridSize === 32 } />
+        <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='64x64' onClick={() => {if(!isGameActive) setGridSize(64)}} disabled={gridSize === 64 } />
 
         <div className='border-b-2 border-slate-500 h-2 w-full rounded-sm' />  
 
