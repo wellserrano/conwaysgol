@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --dialog-background: rgb(229 231 235);
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: var(--dialog-background);
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #e0cbcb;
+    border-radius: 100vh;
+    border: 4px solid var(--dialog-background);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgb(203 213 225);
+  }
+}

@@ -166,11 +166,12 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
 
 
       <div className='flex flex-col h-full justify-center gap-4 items-end'>
+
         <CustomDialog />
 
         <div className='relative flex flex-col h-fit p-3 gap-4 bg-black/10 rounded-sm'>
 
-          <PlayButton className={ isGameActive ? 'bg-green-300 hover:bg-red-300' : undefined } title={ isGameActive ? 'Pause' : 'Play'} onClick={ startGame } />
+          <PlayButton className={ isGameActive ? 'bg-green-300 hover:bg-red-300' : 'hover:bg-green-200' } title={ isGameActive ? 'Pause' : 'Play'} onClick={ startGame } />
           <ClearButton onClick={ clear } disabled={ isGameActive }/>
           <RandomizeButton onClick={ randomize } disabled={ isGameActive }/>
           
