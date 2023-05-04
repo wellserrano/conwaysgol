@@ -6,13 +6,11 @@ import { useState, useEffect, forwardRef, HTMLAttributes } from 'react'
 import { cva, VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils/cn'
 
-import { Grid } from '@/models/Grid'
-
 import RandomizeButton from './RandomizeButton'
 import PlayButton from './PlayButton'
 import SizeButton from './SizeButton'
-import AboutButton from './AboutButton'
 import ClearButton from './ClearButton'
+import { CustomDialog } from './CustomDialog'
 
 const boardVariants = cva(
  `flex flex-row w-full justify-between gap-8 items-center overflow-hidden`,
@@ -167,22 +165,25 @@ const Board = forwardRef<HTMLDivElement, BoardProps>(
       </div>
 
 
-      <div className='relative flex flex-col h-fit p-3 gap-4 bg-black/10 rounded-sm'>
-        <PlayButton className={ isGameActive ? 'bg-green-300 hover:bg-red-300' : undefined } title={ isGameActive ? 'Pause' : 'Play'} onClick={ startGame } />
-        <ClearButton onClick={ clear } disabled={ isGameActive }/>
-        <RandomizeButton onClick={ randomize } disabled={ isGameActive }/>
-        
-        <div className='border-b-2 border-slate-500 h-2 w-full rounded-sm' />  
-        
-        <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='12x12' onClick={() => {if(!isGameActive) setGridSize(12)}} disabled={gridSize === 12 } />
-        <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='24x24' onClick={() => {if(!isGameActive) setGridSize(24)}} disabled={gridSize === 24 } />
-        <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='32x32' onClick={() => {if(!isGameActive) setGridSize(32)}} disabled={gridSize === 32 } />
-        <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='64x64' onClick={() => {if(!isGameActive) setGridSize(64)}} disabled={gridSize === 64 } />
+      <div className='flex flex-col h-full justify-center gap-4 items-end'>
+        <CustomDialog />
 
-        <div className='border-b-2 border-slate-500 h-2 w-full rounded-sm' />  
+        <div className='relative flex flex-col h-fit p-3 gap-4 bg-black/10 rounded-sm'>
 
-        <AboutButton />
+          <PlayButton className={ isGameActive ? 'bg-green-300 hover:bg-red-300' : undefined } title={ isGameActive ? 'Pause' : 'Play'} onClick={ startGame } />
+          <ClearButton onClick={ clear } disabled={ isGameActive }/>
+          <RandomizeButton onClick={ randomize } disabled={ isGameActive }/>
+          
+          <div className='border-b-2 border-slate-500 h-2 w-full rounded-sm' />  
+          
+          <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='12x12' onClick={() => {if(!isGameActive) setGridSize(12)}} disabled={gridSize === 12 } />
+          <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='24x24' onClick={() => {if(!isGameActive) setGridSize(24)}} disabled={gridSize === 24 } />
+          <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='32x32' onClick={() => {if(!isGameActive) setGridSize(32)}} disabled={gridSize === 32 } />
+          <SizeButton className={isGameActive ? 'hover:cursor-default opacity-50' : ''} title='64x64' onClick={() => {if(!isGameActive) setGridSize(64)}} disabled={gridSize === 64 } />
 
+          {/* <div className='border-b-2 border-slate-500 h-2 w-full rounded-sm' />   */}
+
+        </div>
       </div>     
 
     </div>
