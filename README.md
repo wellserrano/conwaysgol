@@ -1,8 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# John Conway's Game of Life
+
+
+## About
+The Game of Life is a computer simulation that models the behavior of simple organisms or cells arranged in a grid-like pattern. Each cell can be either "alive" or "dead", and the game applies a set of rules that determine how the cells evolve over time. The rules are based on the number of neighboring cells that are alive or dead, and they can create complex patterns that are unpredictable and beautiful. The game is a fascinating way to explore the concepts of cellular automata, and to see how simple rules can give rise to complex behavior.
+
 
 ## Getting Started
 
-First, run the development server:
+First, run the development server locally with:
 
 ```bash
 npm run dev
@@ -12,25 +17,10 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
+Project available [here](https://golconway.netlify.app/)
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/82af6c89-708b-47bb-9eb6-b5ac19f4cb25/deploy-status)](https://app.netlify.com/sites/golconway/deploys)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
